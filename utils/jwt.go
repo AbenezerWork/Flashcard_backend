@@ -37,7 +37,7 @@ func GenerateJWT(user models.User) (string, error) {
 func ParseJWT(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+		return []byte(jwtKey), nil
 	})
 	if err != nil {
 		return nil, err
