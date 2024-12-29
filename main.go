@@ -4,9 +4,12 @@ import (
 	"flashcard/config"
 	"flashcard/models"
 	"flashcard/routes"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
 	// Initialize the database
 	config.InitDB()
 

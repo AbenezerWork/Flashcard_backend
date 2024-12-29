@@ -3,13 +3,13 @@ package utils
 import (
 	"errors"
 	"flashcard/models"
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/joho/godotenv"
 )
 
-var jwtKey = godotenv.Load("JWT_SECRET")
+var jwtKey = os.Getenv("JWT_SECRET")
 
 type Claims struct {
 	UserID uint `json:"user_id"`
@@ -26,7 +26,7 @@ func GenerateJWT(user models.User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
+	tokenString, err := token.SignedString([]byte(jwtKey))
 	if err != nil {
 		return "", err
 	}
