@@ -27,6 +27,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	r.POST("/register", authController.Register)
 	r.POST("/login", authController.Login)
+	r.GET("/validatetoken", authController.ValidateToken)
 	api := r.Group("/api/v1")
 	{
 		api.Use(middleware.AuthMiddleware())

@@ -5,6 +5,7 @@ import (
 	"flashcard/usecases"
 	"flashcard/utils"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -65,4 +66,27 @@ func (ac *AuthController) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
+}
+
+func (ac *AuthController) ValidateToken(c *gin.Context) {
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token is required"})
+		return
+	}
+
+	tokenString := strings.TrimPrefix(token, "Bearer ")
+	if tokenString == token {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Bearer token required"})
+		c.Abort()
+		return
+	}
+
+	claims, err := utils.ParseJWT(tokenString)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user_id": claims.UserID})
 }
