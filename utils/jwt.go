@@ -13,7 +13,7 @@ var jwtKey = os.Getenv("JWT_SECRET")
 
 type Claims struct {
 	UserID    uint   `json:"user_id"`
-	UserEmail string `json:"user_name"`
+	UserEmail string `json:"user_email"`
 	jwt.StandardClaims
 }
 
