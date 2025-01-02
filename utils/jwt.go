@@ -12,14 +12,16 @@ import (
 var jwtKey = os.Getenv("JWT_SECRET")
 
 type Claims struct {
-	UserID uint `json:"user_id"`
+	UserID    uint   `json:"user_id"`
+	UserEmail string `json:"user_name"`
 	jwt.StandardClaims
 }
 
 func GenerateJWT(user models.User) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
-		UserID: user.ID,
+		UserID:    user.ID,
+		UserEmail: user.Email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
